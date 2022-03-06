@@ -1,3 +1,4 @@
+
 let App = {
     loading: false,
     contracts: {},
@@ -6,6 +7,7 @@ let App = {
     
         await App.loadWeb3();
         await App.loadAccount();
+        await App.loadContract();
     },
     loadWeb3: async() => {
         if (typeof web3 !== 'undefined') {
@@ -48,7 +50,9 @@ let App = {
         $('#account').text(App.account);
     },
     loadContract: async () => {
-        const todoList = await $.getJSON('TodoList.json');
+        
+        const todoList = await $.getJSON('./build/contracts/TodoList.json');
+        console.log(todoList);
         App.contracts.TodoList = TruffleContract(todoList);
         App.contracts.TodoList.setProvider(App.web3provider);
 
@@ -109,7 +113,7 @@ let App = {
 }
 
 $(() => {
-    $(window).load(() => {
+    $(window).on('load',() => {
         console.log('loading the app..');
         App.load();
     });
