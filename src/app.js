@@ -46,6 +46,36 @@ let App = {
         console.log('account:');
         console.log(App.account);
         $('#account').text(App.account);
+    },
+    loadContract: async () => {
+        const todoList = await $.getJSON('TodoList.json');
+        App.contracts.TodoList = TruffleContract(todoList);
+        App.contracts.TodoList.setProvider(App.web3provider);
+
+        App.todoList = await App.contracts.TodoList.deployed();
+    },
+    render:async () => {
+        if(App.loading){
+            return;
+        }
+
+        App.setLoading(false);
+    },
+    renderTasks: async() => {
+
+    },
+    setLoading: (boolean) => {
+        App.loading = boolean;
+        const loader = $('#loader');
+        const content = $('#content');
+        if(boolean){
+            loader.show();
+            content.hide();
+        }else{
+            loader.hide();
+            content.show();
+        }
+
     }
 }
 
